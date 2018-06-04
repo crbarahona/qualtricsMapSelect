@@ -1,4 +1,6 @@
-Qualtrics Custom Question template repo
+Qualtrics Custom Map Select
 ====
 
-I do a lot of custom Qualtrics programming. This is a base template repo for me to begin with.
+This custom Qualtrics question creates a interactive leaflet.js map that can be used to select region with the corresponding id.
+
+In progress demo at: https://ucdavis.co1.qualtrics.com/jfe/preview/SV_0oYPOitnBIZUtF3?Q_SurveyVersionID=current&Q_CHL=preview
