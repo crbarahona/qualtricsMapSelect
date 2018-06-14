@@ -1,11 +1,25 @@
+var question;
+function toggleChoice(choice){
+  if(question.getChoiceValue(choice)){
+    question.setChoiceValue(choice,false);
+  }
+  else question.setChoiceValue(choice, true);
+}
+function selectnone(){
+    $j(".QuestionBody input").prop("checked", false);
+}
+function selectall(){
+    $j(".QuestionBody input").prop("checked", true);
+}
+
 Qualtrics.SurveyEngine.addOnload(function()
 {
-	/*Place your JavaScript here to run when the page loads*/
 
 });
 
 Qualtrics.SurveyEngine.addOnReady(function()
 {
+  question = this;
 var map = L.map('map', {
     zoomControl:true, maxZoom:9, minZoom:8
 }).fitBounds([[37.129978998053566,-123.7097155817439],[38.43288831108196,-120.88772842993154]]);
@@ -28,7 +42,8 @@ function pop_SFBay_OLUs_v0r1_1(feature, layer) {
     //layer.bindPopup(popupContent, {maxHeight: 400});
 layer.on('click',function(e,popupContent){
       debugger;
-      alert(feature.properties['Name']);
+      optionID = feature.properties['OBJECTID'];
+      toggleChoice(optionID);
     });
 }
 
