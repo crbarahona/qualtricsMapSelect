@@ -13,8 +13,11 @@ function selectnone(){
     debugger;
     var id = this.id;
     var choice = id.split("~")[2];
-    map.removeLayer(layerArray[choice]);
-    layerArray[choice] = undefined;
+    if(layerArray[choice] !== undefined){
+
+      map.removeLayer(layerArray[choice]);
+      layerArray[choice] = undefined;
+    }
   });
 }
 function selectall(){
@@ -47,6 +50,11 @@ Qualtrics.SurveyEngine.addOnload(function()
 Qualtrics.SurveyEngine.addOnReady(function()
 {
   question = this;
+  var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            highlightLayer.openPopup();
+        }
   map = L.map('map', {
       zoomControl:true, maxZoom:11, minZoom:8
   }).fitBounds([[37.129978998053566,-123.7097155817439],[38.43288831108196,-120.88772842993154]]);
@@ -66,7 +74,24 @@ Qualtrics.SurveyEngine.addOnReady(function()
                   <td colspan="2">' + (feature.properties['Name'] !== null ? Autolinker.link(String(feature.properties['Name'])) : '') + '</td>\
               </tr>\
           </table>';
-      //layer.bindPopup(popupContent, {maxHeight: 400});
+  layer.on({
+        mouseout: function(e) {
+            if (typeof layer.closePopup == 'function') {
+                layer.closePopup();
+            } else {
+                layer.eachLayer(function(feature){
+                    feature.closePopup()
+                });
+            }
+        },
+        mouseover: highlightFeature,
+    });
+    var popupContent = '<table>\
+            <tr>\
+                <td>' + (feature.properties['Name'] !== null ? Autolinker.link(String(feature.properties['Name'])) : '') + '</td>\
+            </tr>\
+        </table>';
+  layer.bindPopup(popupContent, {maxHeight: 400});
   layer.on('click',function(e,popupContent){
       optionID = feature.properties['OBJECTID'];
       if(layerArray[feature.properties['OBJECTID']] === undefined){
