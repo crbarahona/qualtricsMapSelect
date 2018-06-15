@@ -22,47 +22,47 @@ Qualtrics.SurveyEngine.addOnload(function()
 Qualtrics.SurveyEngine.addOnReady(function()
 {
   question = this;
-var map = L.map('map', {
-    zoomControl:true, maxZoom:10, minZoom:8
-}).fitBounds([[37.129978998053566,-123.7097155817439],[38.43288831108196,-120.88772842993154]]);
-var hash = new L.Hash(map);
-map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
-var bounds_group = new L.featureGroup([]);
-function setBounds() {
-}
-var overlay_EsriGraylight_0 = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-    opacity: 1.0
-});
-overlay_EsriGraylight_0.addTo(map);
-map.addLayer(overlay_EsriGraylight_0);
-function pop_SFBay_OLUs_v0r1_1(feature, layer) {
-    var popupContent = '<table>\
-            <tr>\
-                <td colspan="2">' + (feature.properties['Name'] !== null ? Autolinker.link(String(feature.properties['Name'])) : '') + '</td>\
-            </tr>\
-        </table>';
-    //layer.bindPopup(popupContent, {maxHeight: 400});
-layer.on('click',function(e,popupContent){
-    optionID = feature.properties['OBJECTID'];
-    if(layerArray[feature.properties['OBJECTID']] === undefined){
-              var polygon = L.geoJson(feature, {
-              style: {
-                color: "#000",
-                fillColor: "#fff",
-                weight: 10,
-                opacity: 0.65
-              }
-            });
-            layerArray[feature.properties['OBJECTID']] = polygon;
-            map.addLayer(polygon);
-          }
-    else {
-      map.removeLayer(layerArray[feature.properties['OBJECTID']]);
-      layerArray[feature.properties['OBJECTID']] = undefined;
-    }
-    toggleChoice(optionID);
+  var map = L.map('map', {
+      zoomControl:true, maxZoom:11, minZoom:8
+  }).fitBounds([[37.129978998053566,-123.7097155817439],[38.43288831108196,-120.88772842993154]]);
+  var hash = new L.Hash(map);
+  map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
+  var bounds_group = new L.featureGroup([]);
+  function setBounds() {
+  }
+  var overlay_EsriGraylight_0 = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+      opacity: 1.0
   });
-}
+  overlay_EsriGraylight_0.addTo(map);
+  map.addLayer(overlay_EsriGraylight_0);
+  function pop_SFBay_OLUs_v0r1_1(feature, layer) {
+      var popupContent = '<table>\
+              <tr>\
+                  <td colspan="2">' + (feature.properties['Name'] !== null ? Autolinker.link(String(feature.properties['Name'])) : '') + '</td>\
+              </tr>\
+          </table>';
+      //layer.bindPopup(popupContent, {maxHeight: 400});
+  layer.on('click',function(e,popupContent){
+      optionID = feature.properties['OBJECTID'];
+      if(layerArray[feature.properties['OBJECTID']] === undefined){
+                var polygon = L.geoJson(feature, {
+                style: {
+                  color: "#000",
+                  fillColor: "#fff",
+                  weight: 10,
+                  opacity: 0.65
+                }
+              });
+              layerArray[feature.properties['OBJECTID']] = polygon;
+              map.addLayer(polygon);
+            }
+      else {
+        map.removeLayer(layerArray[feature.properties['OBJECTID']]);
+        layerArray[feature.properties['OBJECTID']] = undefined;
+      }
+      toggleChoice(optionID);
+    });
+  }
 
 function style_SFBay_OLUs_v0r1_1_0(feature) {
     switch(String(feature.properties['Name'])) {
@@ -501,20 +501,42 @@ function style_SFBay_OLUs_v0r1_1_0(feature) {
     }
             break;
     }
-}
-map.createPane('pane_SFBay_OLUs_v0r1_1');
-map.getPane('pane_SFBay_OLUs_v0r1_1').style.zIndex = 401;
-map.getPane('pane_SFBay_OLUs_v0r1_1').style['mix-blend-mode'] = 'normal';
-var layer_SFBay_OLUs_v0r1_1 = new L.geoJson(json_SFBay_OLUs_v0r1_1, {
-    attribution: '<a href=""></a>',
-    pane: 'pane_SFBay_OLUs_v0r1_1',
-    onEachFeature: pop_SFBay_OLUs_v0r1_1,
-    style: style_SFBay_OLUs_v0r1_1_0,
-});
-bounds_group.addLayer(layer_SFBay_OLUs_v0r1_1);
-map.addLayer(layer_SFBay_OLUs_v0r1_1);
-setBounds();
-map.setZoom(9)
+  }
+  map.createPane('pane_SFBay_OLUs_v0r1_1');
+  map.getPane('pane_SFBay_OLUs_v0r1_1').style.zIndex = 401;
+  map.getPane('pane_SFBay_OLUs_v0r1_1').style['mix-blend-mode'] = 'normal';
+  var layer_SFBay_OLUs_v0r1_1 = new L.geoJson(json_SFBay_OLUs_v0r1_1, {
+      attribution: '<a href=""></a>',
+      pane: 'pane_SFBay_OLUs_v0r1_1',
+      onEachFeature: pop_SFBay_OLUs_v0r1_1,
+      style: style_SFBay_OLUs_v0r1_1_0,
+  });
+  bounds_group.addLayer(layer_SFBay_OLUs_v0r1_1);
+  map.addLayer(layer_SFBay_OLUs_v0r1_1);
+  setBounds();
+  map.setZoom(9)
+
+  $j("#" + this.questionId + " input:checkbox[id^='QR\\~"+ this.questionId + "\\~']").change(function(e){
+    debugger;
+    var id = e.target.id;
+    var choice = id.split("~")[2];
+    if(layerArray[choice] === undefined){
+      var polygon = L.geoJson(json_SFBay_OLUs_v0r1_1.features[choice - 1], {
+        style: {
+          color: "#000",
+          fillColor: "#fff",
+          weight: 10,
+          opacity: 0.65
+        }
+      });
+      layerArray[choice] = polygon;
+      map.addLayer(polygon);
+    }
+    else {
+      map.removeLayer(layerArray[choice]);
+      layerArray[choice] = undefined;
+    }
+  });
 });
 
 Qualtrics.SurveyEngine.addOnUnload(function()
