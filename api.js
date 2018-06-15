@@ -537,6 +537,22 @@ function style_SFBay_OLUs_v0r1_1_0(feature) {
       layerArray[choice] = undefined;
     }
   });
+
+  for(var i=0, len=this.getSelectedChoices().length; i<len; i++){
+    var choice = this.getSelectedChoices()[i]);
+    if(layerArray[choice] === undefined){
+      var polygon = L.geoJson(json_SFBay_OLUs_v0r1_1.features[choice - 1], {
+        style: {
+          color: "#000",
+          fillColor: "#fff",
+          weight: 10,
+          opacity: 0.65
+        }
+      });
+      layerArray[choice] = polygon;
+      map.addLayer(polygon);
+    }
+  }
 });
 
 Qualtrics.SurveyEngine.addOnUnload(function()
