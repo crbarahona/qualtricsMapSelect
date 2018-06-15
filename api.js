@@ -1,4 +1,6 @@
 var question;
+var layerArray = [];
+
 function toggleChoice(choice){
   if(question.getChoiceValue(choice)){
     question.setChoiceValue(choice,false);
@@ -21,7 +23,7 @@ Qualtrics.SurveyEngine.addOnReady(function()
 {
   question = this;
 var map = L.map('map', {
-    zoomControl:true, maxZoom:9, minZoom:8
+    zoomControl:true, maxZoom:10, minZoom:8
 }).fitBounds([[37.129978998053566,-123.7097155817439],[38.43288831108196,-120.88772842993154]]);
 var hash = new L.Hash(map);
 map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
@@ -41,10 +43,25 @@ function pop_SFBay_OLUs_v0r1_1(feature, layer) {
         </table>';
     //layer.bindPopup(popupContent, {maxHeight: 400});
 layer.on('click',function(e,popupContent){
-      debugger;
-      optionID = feature.properties['OBJECTID'];
-      toggleChoice(optionID);
-    });
+    optionID = feature.properties['OBJECTID'];
+    if(layerArray[feature.properties['OBJECTID']] === undefined){
+              var polygon = L.geoJson(feature, {
+              style: {
+                color: "#000",
+                fillColor: "#fff",
+                weight: 10,
+                opacity: 0.65
+              }
+            });
+            layerArray[feature.properties['OBJECTID']] = polygon;
+            map.addLayer(polygon);
+          }
+    else {
+      map.removeLayer(layerArray[feature.properties['OBJECTID']]);
+      layerArray[feature.properties['OBJECTID']] = undefined;
+    }
+    toggleChoice(optionID);
+  });
 }
 
 function style_SFBay_OLUs_v0r1_1_0(feature) {
