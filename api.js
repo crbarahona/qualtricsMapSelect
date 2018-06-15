@@ -9,20 +9,45 @@ function toggleChoice(choice){
 }
 function selectnone(){
     $j(".QuestionBody input").prop("checked", false);
+    $j(".QuestionBody input").each(function(e){
+    debugger;
+    var id = this.id;
+    var choice = id.split("~")[2];
+    map.removeLayer(layerArray[choice]);
+    layerArray[choice] = undefined;
+  });
 }
 function selectall(){
     $j(".QuestionBody input").prop("checked", true);
+    $j(".QuestionBody input").each(function(e){
+    debugger;
+    var id = this.id;
+    var choice = id.split("~")[2];
+    if(layerArray[choice] === undefined){
+      var polygon = L.geoJson(json_SFBay_OLUs_v0r1_1.features[choice - 1], {
+        style: {
+          color: "#000",
+          fillColor: "#fff",
+          weight: 10,
+          opacity: 0.65
+        }
+      });
+      layerArray[choice] = polygon;
+      map.addLayer(polygon);
+    }
+  });
 }
 
 Qualtrics.SurveyEngine.addOnload(function()
 {
-
+  $j(".QuestionText small").eq(0).after("<div id='toggleLinks'>Select <a href='javascript:selectall()'>All</a> / <a href='javascript:selectnone()'>None</a></div>");
+	$j(".QuestionText small").eq(1).parent().before("<div id='toggleLinks'>Select <a href='javascript:selectall()'>All</a> / <a href='javascript:selectnone()'>None</a></div>");
 });
 
 Qualtrics.SurveyEngine.addOnReady(function()
 {
   question = this;
-  var map = L.map('map', {
+  map = L.map('map', {
       zoomControl:true, maxZoom:11, minZoom:8
   }).fitBounds([[37.129978998053566,-123.7097155817439],[38.43288831108196,-120.88772842993154]]);
   var hash = new L.Hash(map);
@@ -517,7 +542,6 @@ function style_SFBay_OLUs_v0r1_1_0(feature) {
   map.setZoom(9)
 
   $j("#" + this.questionId + " input:checkbox[id^='QR\\~"+ this.questionId + "\\~']").change(function(e){
-    debugger;
     var id = e.target.id;
     var choice = id.split("~")[2];
     if(layerArray[choice] === undefined){
@@ -539,7 +563,7 @@ function style_SFBay_OLUs_v0r1_1_0(feature) {
   });
 
   for(var i=0, len=this.getSelectedChoices().length; i<len; i++){
-    var choice = this.getSelectedChoices()[i]);
+    var choice = this.getSelectedChoices()[i];
     if(layerArray[choice] === undefined){
       var polygon = L.geoJson(json_SFBay_OLUs_v0r1_1.features[choice - 1], {
         style: {
