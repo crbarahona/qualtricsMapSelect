@@ -10,20 +10,20 @@ function toggleChoice(choice){
 function selectnone(){
     $j(".QuestionBody input").prop("checked", false);
     $j(".QuestionBody input").each(function(e){
-    debugger;
-    var id = this.id;
-    var choice = id.split("~")[2];
-    if(layerArray[choice] !== undefined){
 
-      map.removeLayer(layerArray[choice]);
-      layerArray[choice] = undefined;
-    }
-  });
+      var id = this.id;
+      var choice = id.split("~")[2];
+      if(layerArray[choice] !== undefined){
+
+        map.removeLayer(layerArray[choice]);
+        layerArray[choice] = undefined;
+      }
+    });
 }
 function selectall(){
     $j(".QuestionBody input").prop("checked", true);
     $j(".QuestionBody input").each(function(e){
-    debugger;
+
     var id = this.id;
     var choice = id.split("~")[2];
     if(layerArray[choice] === undefined){
@@ -61,8 +61,8 @@ Qualtrics.SurveyEngine.addOnReady(function()
   var hash = new L.Hash(map);
   map.attributionControl.addAttribution('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a>');
   var bounds_group = new L.featureGroup([]);
-  function setBounds() {
-  }
+  map.setMaxBounds(map.getBounds());
+
   var overlay_EsriGraylight_0 = L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
       opacity: 1.0
   });
